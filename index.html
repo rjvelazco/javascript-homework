@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+
+    <div class="container">
+        <header>
+            <h1 class="text-center">Sistema de Inventario</h1>
+        </header>
+        <div class="wrapper">
+            <div class="wrapper-form">
+                <h4 class="form-title">Agrega un Producto</h4>
+                <form class="form" onsubmit="handlerSubmit(event)">
+                    <div class="row">
+                        <div class="col">
+                            <label class="input-label" for="cod">Codigo <small>*</small></label>
+                            <input placeholder="#19203" id="cod" autocomplete="off" value="2012" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label class="input-label" for="name">Nombre <small>*</small></label>
+                            <input placeholder="Nombre del Producto" id="name" autocomplete="off" value="Laptop" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label class="input-label" for="price">Precio <small>*</small></label>
+                            <input placeholder="$20" id="price" autocomplete="off" value="20" />
+                        </div>
+                        <div class="col">
+                            <label class="input-label" for="quantity">Cantidad <small>*</small></label>
+                            <input placeholder="10" id="quantity" autocomplete="off" value="10" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label class="input-label" for="cod">Descripcion</label>
+                            <textarea class="description" placeholder="La mejor alternativa del mercado en..."
+                                id="desc"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-rules hidden" id="form-rules">
+                        <ul class="form-rules-list">
+                            <li><span>Complete todo los campos requeridos. (*)</span></li>
+                            <li><span>Los campos [Codigo, Precio y Cantidad] deben ser numericos.</span></li>
+                        </ul>
+                    </div>
+                    <button type="submit" class="btn btn-block btn-add">
+                        Agregar
+                    </button>
+                    <button type="button" class="btn btn-block btn-remove mt-2 hidden" id="cancel-edit"
+                        onclick="cancelEdit()">
+                        Cancelar
+                    </button>
+                </form>
+            </div>
+
+            <div class="wrapper-listing-table">
+                <div class="sort-by">
+                    <span class="sort-by-tittle">Ordenar por</span>
+                    <ul>
+                        <li><button class="btn-sort active" onclick="handlerSortClick(event)"
+                                data-key="codigo">codigo</button></li>
+                        <li><button class="btn-sort" onclick="handlerSortClick(event)" data-key="name">Nombre</button>
+                        </li>
+                        <li><button class="btn-sort" onclick="handlerSortClick(event)" data-key="price">Precio</button>
+                        </li>
+                        <li><button class="btn-sort" onclick="handlerSortClick(event)"
+                                data-key="quantity">Cantidad</button></li>
+                    </ul>
+                </div>
+                <hr class="divider">
+                <div class="listing-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Descripcion</th>
+                                <th>Precio ($)</th>
+                                <th>Cantidad</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listing"></tbody>
+                    </table>
+                </div>
+                <div class="wrapper-record">
+                    <div class="container-record">
+                        <div class="col record-col">
+                            <label class="input-label" for="total-products">Total de productos</label>
+                            <input class="record-input" id="total-products" value="0" disabled />
+                        </div>
+                        <div class="col record-col">
+                            <label class="input-label" for="stock">Valor del Inventario</label>
+                            <input class="record-input" id="stock" value="0" disabled />
+                        </div>
+                        <div class="col record-col">
+                            <label class="input-label" for="quantity-products">Cantidad de Productos</label>
+                            <input class="record-input" id="quantity-products" value="0" disabled />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
