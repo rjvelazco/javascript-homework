@@ -4,7 +4,7 @@ const $desc = document.getElementById("desc");
 const $price = document.getElementById("price");
 const $quantity = document.getElementById("quantity");
 const $formRules = document.getElementById("form-rules");
-// Recrods
+// Records
 const $totalProdutcs = document.getElementById("total-products");
 const $stock = document.getElementById("stock");
 const $quantityProducts = document.getElementById("quantity-products");
@@ -44,7 +44,7 @@ const handlerSubmit = (e) => {
   updateRecors(item);
   drawTable(items);
   drawRecords();
-  // cleanForm();
+  cleanForm();
 };
 
 const drawTable = (items) => {
@@ -177,10 +177,7 @@ const removeItem = (id) => {
   drawTable(items);
 };
 
-const sortBy = (items, key) => {
-  return items.sort((a, b) => a[key] - b[key]);
-};
-
+// Sort Table
 const handlerSortClick = ({ target }) => {
   currentSortBy = target.getAttribute("data-key");
 
@@ -192,3 +189,20 @@ const handlerSortClick = ({ target }) => {
 
   drawTable(items);
 };
+
+const sortBy = (items, key) => {
+  return items.sort(key === "name" ? sortByAlf : sortByNumber);
+};
+
+const sortByAlf = (a, b) => {
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+
+  return 0;
+};
+
+const sortByNumber = (a, b) => a[key] - b[key];
