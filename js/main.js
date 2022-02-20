@@ -53,7 +53,7 @@ const drawTable = (items) => {
 
   sortBy(items, currentSortBy);
   items.forEach((item) => {
-    str += "<tr>";
+    str += `<tr ${+item.quantity === 0 ? 'class="no-items"' : ""}>`;
     str += addItem(item);
     str += addButtons(item.codigo);
     str += "</tr>";

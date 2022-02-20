@@ -5,6 +5,7 @@
     --blue-color: #3e92cc;
     --orange-color: #FF9F1C;
     --bg-color: #FDFFFC;
+    --bg-red-color: #ae2012;
 }
 
 * {
@@ -195,6 +196,11 @@ table {
     width: 100%;
     min-width: 600px;
     max-width: 1000px;
+}
+
+tr.no-items {
+    background-color: var(--bg-red-color);
+    color: var(--bg-color);
 }
 
 th {
