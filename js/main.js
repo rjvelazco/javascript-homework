@@ -80,8 +80,11 @@ const addItem = (item) => {
   str = "";
   for (const key in item) {
     const value = item[key];
-    const text = isNaN(value) ? value || "No hay descripcion." : +value;
-    str += `<td ${key === "desc" ? 'class="td-description"' : ""}>${text}</td>`;
+    const text = isNaN(value) ? value : +value;
+    const isDesc = key == "desc";
+    str += `<td ${isDesc ? 'class="td-description"' : ""}>${
+      key == "desc" && !text ? "No hay Descripcion." : text
+    }</td>`;
   }
   return str;
 };
@@ -118,6 +121,10 @@ const isValid = (item) => {
   }
 
   if (isNaN(price) || isNaN(quantity) || isNaN(codigo) || !isNaN(name)) {
+    return false;
+  }
+
+  if (price <= 0 || quantity < 0 || codigo < 0) {
     return false;
   }
 
