@@ -11,6 +11,7 @@ const $quantityProducts = document.getElementById("quantity-products");
 const $btnsSort = document.querySelectorAll(".btn-sort");
 
 let editing = false;
+let editItemCode = null;
 let items = [];
 let currentSortBy = "codigo";
 
@@ -36,6 +37,7 @@ const handlerSubmit = (e) => {
 
   if (editing) {
     editItem(item);
+    cleanEdit();
     cleanForm();
     return;
   }
@@ -52,6 +54,10 @@ const drawTable = (items) => {
   str = "";
 
   sortBy(items, currentSortBy);
+  if (!items.length) {
+    str =
+      "<tr><td colspan='6' class='text-center'>No hay items disponibles</td></tr>";
+  }
   items.forEach((item) => {
     str += `<tr ${+item.quantity === 0 ? 'class="no-items"' : ""}>`;
     str += addItem(item);
@@ -73,9 +79,9 @@ const drawRecords = () => {
 const addItem = (item) => {
   str = "";
   for (const key in item) {
-    str += `<td ${key === "desc" ? 'class="td-description"' : ""}>${
-      item[key] || "No hay descripcion."
-    }</td>`;
+    const value = item[key];
+    const text = isNaN(value) ? value || "No hay descripcion." : +value;
+    str += `<td ${key === "desc" ? 'class="td-description"' : ""}>${text}</td>`;
   }
   return str;
 };
@@ -111,7 +117,7 @@ const isValid = (item) => {
     return false;
   }
 
-  if (isNaN(price) || isNaN(quantity) || isNaN(codigo)) {
+  if (isNaN(price) || isNaN(quantity) || isNaN(codigo) || !isNaN(name)) {
     return false;
   }
 
@@ -127,6 +133,10 @@ const showErrors = (codigoError = false, codigo) => {
 };
 
 const existCodigo = (codigo = "") => {
+  if (codigo === editItemCode) {
+    return false;
+  }
+
   const exist = items.some((item) => item.codigo === codigo);
 
   return exist;
@@ -152,24 +162,33 @@ const updateRecors = (item) => {
 const setEditItem = (id) => {
   const item = getItem(id);
   editing = true;
+  editItemCode = item.codigo;
   $codigo.value = item.codigo;
   $name.value = item.name;
   $desc.value = item.desc;
   $price.value = item.price;
   $quantity.value = item.quantity;
   document.getElementById("cancel-edit").classList.remove("hidden");
+  document.getElementById("cod").setAttribute("disabled", "true");
 };
 
 const editItem = (itemEdited) => {
   items = items.map((item) =>
-    item.codigo != itemEdited.codigo ? item : { ...item, ...itemEdited }
+    item.codigo != itemEdited.codigo ? item : itemEdited
   );
   drawTable(items);
 };
 
 const cancelEdit = () => {
-  document.getElementById("cancel-edit").classList.add("hidden");
+  cleanEdit();
   cleanForm();
+};
+
+const cleanEdit = () => {
+  document.getElementById("cancel-edit").classList.add("hidden");
+  document.getElementById("cod").removeAttribute("disabled");
+  editing = false;
+  editItemCode = null;
 };
 
 const removeItem = (id) => {
@@ -191,7 +210,9 @@ const handlerSortClick = ({ target }) => {
 };
 
 const sortBy = (items, key) => {
-  return items.sort(key === "name" ? sortByAlf : sortByNumber);
+  return items.sort((a, b) =>
+    key === "name" ? sortByAlf(a, b) : sortByNumber(a, b, key)
+  );
 };
 
 const sortByAlf = (a, b) => {
@@ -205,4 +226,7 @@ const sortByAlf = (a, b) => {
   return 0;
 };
 
-const sortByNumber = (a, b) => a[key] - b[key];
+const sortByNumber = (a, b, key) => a[key] - b[key];
+
+// Load Empty Message
+drawTable(items);
